@@ -17,16 +17,16 @@ module.exports = function (grunt) {
     });
 
     async.eachLimit(this.files, options.limit, function (el, next) {
-      var rootdir = path.dirname(el.src);
-      var pngFile = path.basename(el.src, ".svg") + ".png";
+      var src = Array.isArray(el.src) ? el.src.pop() : el.src;
+      var rootdir = path.dirname(src);
+      var pngFile = path.basename(src, ".svg") + ".png";
       var destDir = path.dirname(el.dest);
       
       var dest = path.join(rootdir, destDir, pngFile);
-      var src = Array.isArray(el.src) ? el.src.pop() : el.src;
       
       svg2png(src, dest, options.scale, function (err) {
         if (err) {
-          grunt.log.error("An error occurred converting %s in %s: %s", el.src, dest, err);
+          grunt.log.error("An error occurred converting %s in %s: %s", src, dest, err);
         }
         else {
           grunt.log.writeln(chalk.green("✔ ") + dest + chalk.gray(" (scale:", options.scale + ")"));
