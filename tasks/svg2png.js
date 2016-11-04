@@ -22,8 +22,9 @@ module.exports = function (grunt) {
       var destDir = path.dirname(el.dest);
       
       var dest = path.join(rootdir, destDir, pngFile);
-
-      svg2png(el.src, dest, options.scale, function (err) {
+      var src = Array.isArray(el.src) ? el.src.pop() : el.src;
+      
+      svg2png(src, dest, options.scale, function (err) {
         if (err) {
           grunt.log.error("An error occurred converting %s in %s: %s", el.src, dest, err);
         }
